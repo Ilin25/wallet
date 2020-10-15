@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title> Добавление операции </title>
+</head>
+
+<body>
+<h1> Добавление операции </h1>
+<br>
+<br>
+<form action="#" th:action="@{/operation/addOperation}" th:object="${operation}" method="post">
+    <p>Дата: <input type="date" th:field="*{date}"/></p>
+    <select class="userName" name="user" id="user" th:field="*{user}">
+        <option value="0">Имя пользователя</option>
+        <option th:each="user : ${users}"
+                th:value="${user.id}"
+                th:selected="${user.name}"
+                th:text="${user.name}">
+        </option>
+    </select>
+    <br>
+    <br>
+    <select class="typeOperation" name="typeOperation" id="type" th:field="*{typeOperation}">
+        <option value="0">Тип операции</option>
+        <option th:each="typeOperation : ${typeOperations}"
+                th:value="${typeOperation}"
+                th:selected="${typeOperation.displayValue}"
+                th:text="${typeOperation.displayValue}">
+        </option>
+    </select>
+    <p>Сумма операции: <input type="number" th:field="*{transactionAmount}"/></p>
+    <p>Описание операции: <input type="text" th:field="*{descriptionOfOperation}"/></p>
+
+    <p><input type="submit" value="Добавить"/></p>
+</form>
+<form action="#" th:action="@{/operation/operationActionMenu}">
+    <p><input type="submit" value="Отмена"/></p>
+</form>
+
+</body>
+</html>

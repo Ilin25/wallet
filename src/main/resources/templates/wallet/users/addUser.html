@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title> Добавление пользователя </title>
+</head>
+
+<body>
+<h1> Добавление пользователя </h1>
+<br>
+<br>
+<form action="#" th:action="@{/user/addUser}" th:object="${user}" method="post">
+    <p>Имя: <input type="text" th:field="*{name}" th:placeholder="Имя"/></p>
+    <p><input type="submit" value="Добавить"/></p>
+</form>
+<form action="#" th:action="@{/user/userActionMenu}">
+    <p><input type="submit" value="Отмена"/></p>
+</form>
+
+</body>
+</html>

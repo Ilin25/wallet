@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <title> Добавление операции </title>
+</head>
+
+<body>
+
+<p> Показать операции за период </p>
+<form action="/operation/getAllPeriodOperation" method="get">
+    Дата начала периода <input name="startPeriod" placeholder="введите дату начала периода" type="date">
+    <br>
+    Дата окончания периода <input name="endPeriod" placeholder="введите дату окрнчания периода" type="date">
+
+    <input type="submit" value="Показать">
+</form>
+</body>
+</html>

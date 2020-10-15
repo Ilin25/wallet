@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+</head>
+<body>
+
+<h2 th:text="${accountBalance}" Текущий баланс></h2>
+
+
+<form action="/operation/getAllPeriodOperation" method="get">
+    Показать операции с <input name="startPeriod" placeholder="введите дату начала периода" type="date">
+    по <input name="endPeriod" placeholder="введите дату окрнчания периода" type="date">
+
+    <input type="submit" value="Показать">
+</form>
+<h2>Операции</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Дата</th>
+        <th>Пользователь</th>
+        <th>Тип операции</th>
+        <th>Описание операции</th>
+        <th>Сумма операции</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr th:each="operation : ${operations}">
+        <td th:text="${operation.getId()}"></td>
+        <td th:text="${operation.getDate()}"></td>
+        <td th:text="${operation.getUser().getName()}"></td>
+        <td th:text="${operation.getTypeOperation().getDisplayValue()}"></td>
+        <td th:text="${operation.getDescriptionOfOperation()}"></td>
+        <td th:text="${operation.getTransactionAmount()}"></td>
+        <td><a th:href="@{/operation/updateOperation/{id}(id=${operation.getId()})}">Редактировать</a></td>
+        <td><a th:href="@{/operation/deleteOperation/{id}(id=${operation.getId()})}">Удалить</a></td>
+    </tr>
+    </tbody>
+</table>
+</div>
+<p><a th:href="@{/operation/addOperation}"> Добавить операцию </a></p>
+<p><a th:href="@{/operation/getAllPeriodOperationForm}"> Посмотреть операции за период </a></p>
+<p><a th:href="@{/}"> Вернуться на главную </a></p>
+</div>
+</body>
+</html>
