@@ -28,10 +28,7 @@ public class OperationServiceImpl implements OperationService {
 
     @Override
     public void addOperation(Operation operation) {
-        if (operation.getTransactionAmount() < 0)//гарантия сохранения в базе только положительных значений сумм операций
-        {
-            operation.setTransactionAmount(Math.abs(operation.getTransactionAmount()));
-        }
+       checkNumberPositivity(operation);
         operationRepository.save(operation);
     }
 
@@ -42,10 +39,7 @@ public class OperationServiceImpl implements OperationService {
 
     @Override
     public void updateOperation(Operation operation) {//обновление операции
-        if (operation.getTransactionAmount() < 0)//гарантия сохранения в базе только положительных значений сумм операций
-        {
-            operation.setTransactionAmount(Math.abs(operation.getTransactionAmount()));
-        }
+        checkNumberPositivity(operation);
         operationRepository.save(operation);
     }
 
@@ -66,9 +60,15 @@ public class OperationServiceImpl implements OperationService {
     public List<Operation> getAllPeriodOperation(String startPeriod, String endPeriod) {
         LocalDate localDate = LocalDate.parse(startPeriod);
         LocalDate localDate1 = LocalDate.parse(endPeriod);
-        List<Operation> operationList = operationRepository.findAll();
-        return operationList.stream().filter(operation -> operation.getDate().isAfter(localDate) && operation.getDate().isBefore(localDate1)).sorted(Comparator.comparing(Operation::getDate)).collect(Collectors.toList());
+        List<Operation> operationList = getAllOperation();
+        return operationList.stream().filter(operation -> operation.getDate().isAfter(localDate) && operation.getDate().isBefore(localDate1)).collect(Collectors.toList());
     }
 
+    private void checkNumberPositivity(Operation operation){
+        if (operation.getTransactionAmount() < 0)//гарантия сохранения в базе только положительных значений сумм операций
+        {
+            operation.setTransactionAmount(Math.abs(operation.getTransactionAmount()));
+        }
+    }
 
 }

@@ -83,11 +83,6 @@ public class OperationController {
         return "redirect:/operation/operationActionMenu";
     }
 
-    @GetMapping("/getAllPeriodOperationForm")
-    public String getAllOperationForm(Model model) {
-        return "/wallet/operations/getAllPeriodOperation";
-    }
-
     @GetMapping("/getAllPeriodOperation")
     public String getAllOperation(@RequestParam("startPeriod") String startPeriod,
                                   @RequestParam("endPeriod") String endPeriod, Model model) {
