@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.ilin.wallet.models.Operation;
 import ru.ilin.wallet.models.TypeOperation;
 import ru.ilin.wallet.repository.OperationRepository;
+import ru.ilin.wallet.util.PeriodOperation;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -44,28 +45,21 @@ public class OperationServiceImpl implements OperationService {
     }
 
     @Override
-    public List<Operation> getAllOperation() {
-        List<Operation> operations = operationRepository.findAll();//при выводе списка покупок, они сортируются по дате
-        Collections.sort(operations, Comparator.comparing(Operation::getDate));
-        operations.stream().forEach(e -> {
-            if (e.getTypeOperation().equals(TypeOperation.PURCHASE)) {//если тип операции покупка
-                e.setTransactionAmount(-e.getTransactionAmount());//то присваивается отриц значение сумме операции
-            } else e.setTransactionAmount(Math.abs(e.getTransactionAmount()));//иначе положительное
-        });
-        return operations;//возврат всех операций
-
+    public List<Operation> getAllPeriodOperation(PeriodOperation periodOperation) {
+        List<Operation> allOperationsList = operationRepository.findAll()
+                .stream()
+                .filter(operation -> operation.getDate().isAfter(periodOperation.getStartPeriod().minusDays(1)) && operation.getDate().isBefore(periodOperation.getEndPeriod().plusDays(1))).collect(Collectors.toList());
+                allOperationsList.forEach(operation -> {
+                    if (operation.getTypeOperation().equals(TypeOperation.PURCHASE)) {//если тип операции покупка
+                        operation.setTransactionAmount(-operation.getTransactionAmount());//то присваивается отриц значение сумме операции
+                    } else operation.setTransactionAmount(Math.abs(operation.getTransactionAmount()));//иначе положительное
+                });
+        return allOperationsList.stream().sorted(Comparator.comparing(Operation::getDate)).collect(Collectors.toList());
     }
 
-    @Override
-    public List<Operation> getAllPeriodOperation(String startPeriod, String endPeriod) {
-        LocalDate localDate = LocalDate.parse(startPeriod);
-        LocalDate localDate1 = LocalDate.parse(endPeriod);
-        List<Operation> operationList = getAllOperation();
-        return operationList.stream().filter(operation -> operation.getDate().isAfter(localDate) && operation.getDate().isBefore(localDate1)).collect(Collectors.toList());
-    }
 
-    private void checkNumberPositivity(Operation operation){
-        if (operation.getTransactionAmount() < 0)//гарантия сохранения в базе только положительных значений сумм операций
+    private void checkNumberPositivity(Operation operation){//гарантия сохранения в базе только положительных значений сумм операций
+        if (operation.getTransactionAmount() < 0)
         {
             operation.setTransactionAmount(Math.abs(operation.getTransactionAmount()));
         }

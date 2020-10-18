@@ -9,12 +9,12 @@
 <h2 th:text="${accountBalance}" Текущий баланс></h2>
 
 
-<form action="/operation/getAllPeriodOperation" method="get">
-    Показать операции с <input name="startPeriod" placeholder="введите дату начала периода" type="date">
-    по <input name="endPeriod" placeholder="введите дату окрнчания периода" type="date">
-
-    <input type="submit" value="Показать">
+<form action="#" th:action="@{/operation/getAllPeriodOperation}" th:object="${periodOperation}" method="get">
+    Показать операции с <p> <input type="date" th:field = "*{startPeriod}"/> </p>
+     <p> по <input type="date" th:field = "*{endPeriod}"/></p>
+    <input type="submit" value="Показать"/><p/>
 </form>
+
 <h2>Операции</h2>
 <table>
     <thead>

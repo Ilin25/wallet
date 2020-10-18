@@ -12,10 +12,7 @@ import ru.ilin.wallet.models.User;
 import ru.ilin.wallet.services.OperationService;
 import ru.ilin.wallet.services.UserService;
 import ru.ilin.wallet.services.WalletService;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import ru.ilin.wallet.util.PeriodOperation;
 
 @Controller
 @RequestMapping("/operation")
@@ -23,9 +20,9 @@ import java.util.List;
 @Setter
 public class OperationController {
 
-    private OperationService operationService;
-    private UserService userService;
-    private WalletService walletService;
+    private final OperationService operationService;
+    private final UserService userService;
+    private final WalletService walletService;
 
     @Autowired
     public OperationController(OperationService operationService, UserService userService, WalletService walletService) {
@@ -35,12 +32,12 @@ public class OperationController {
     }
 
 
-    @GetMapping("/operationActionMenu")//возвращает меню действий с операциями
+    @GetMapping("/operationActionMenu")//возвращает меню действий с операциями со списком операций за месяц по умолчанию
     public String operationActionMenuForm(Model model) {
-        List<Operation> operationList = operationService.getAllOperation();
-        model.addAttribute("operation", new Operation());
-        model.addAttribute("operations", operationList);
+        PeriodOperation periodOperation = new PeriodOperation();
+        model.addAttribute("operations", operationService.getAllPeriodOperation(periodOperation));
         model.addAttribute("accountBalance", walletService.getAccountBalance());
+        model.addAttribute("periodOperation",periodOperation);
         return "/wallet/operations/operationActionMenu";
     }
 
@@ -83,12 +80,12 @@ public class OperationController {
         return "redirect:/operation/operationActionMenu";
     }
 
-    @GetMapping("/getAllPeriodOperation")
-    public String getAllOperation(@RequestParam("startPeriod") String startPeriod,
-                                  @RequestParam("endPeriod") String endPeriod, Model model) {
-        List<Operation> operationList = operationService.getAllPeriodOperation(startPeriod, endPeriod);
+    @GetMapping("/getAllPeriodOperation")//возврат меню операций за пределённый период
+    public String getAllPeriodOperation(Model model, PeriodOperation periodOperation) {
+        periodOperation.setStartPeriod(periodOperation.getStartPeriod());
+        periodOperation.setEndPeriod(periodOperation.getEndPeriod());
         model.addAttribute("operation", new Operation());
-        model.addAttribute("operations", operationList);
+        model.addAttribute("operations", operationService.getAllPeriodOperation(periodOperation));
         model.addAttribute("accountBalance", walletService.getAccountBalance());
         return "/wallet/operations/operationActionMenu";
 

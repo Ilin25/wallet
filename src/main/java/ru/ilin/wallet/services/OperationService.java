@@ -1,6 +1,7 @@
 package ru.ilin.wallet.services;
 
 import ru.ilin.wallet.models.Operation;
+import ru.ilin.wallet.util.PeriodOperation;
 
 import java.util.List;
 
@@ -13,7 +14,6 @@ public interface OperationService {
 
     void updateOperation(Operation operation);
 
-    List<Operation> getAllOperation();
+    List<Operation> getAllPeriodOperation(PeriodOperation periodOperation);
 
-    List<Operation> getAllPeriodOperation(String startPeriod, String endPeriod);
 }
