@@ -21,7 +21,6 @@ public class OperationServiceImpl implements OperationService {
         this.operationRepository = operationRepository;
     }
 
-
     @Override
     public Operation getOperationId(int id) {
         return operationRepository.getOne(id);
