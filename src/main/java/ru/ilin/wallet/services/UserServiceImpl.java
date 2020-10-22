@@ -20,12 +20,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserId(int id) {
-        return userRepository.getOne(id);
+        return userRepository.getUserById(id);
     }
 
     @Override
     public void addUser(User user) {
-        userRepository.save(user);
+        userRepository.addUser(user);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllUser() {
-        return userRepository.findAll();
+        return userRepository.getAllUser();
     }
 
 
