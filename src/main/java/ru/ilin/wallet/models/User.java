@@ -20,6 +20,6 @@ public class User {
     private int id;
     @Column(name = "name_user")
     private String name;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Operation> historyOperations = new ArrayList<>();
 }
