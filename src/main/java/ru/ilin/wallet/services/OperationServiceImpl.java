@@ -8,6 +8,7 @@ import ru.ilin.wallet.repository.OperationRepository;
 import ru.ilin.wallet.util.PeriodOperation;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -23,13 +24,17 @@ public class OperationServiceImpl implements OperationService {
 
     @Override
     public Operation getOperationId(int id) {
-        return operationRepository.getOne(id);
+        return operationRepository.getOperationById(id);
     }
 
     @Override
     public void addOperation(Operation operation) {
        checkNumberPositivity(operation);
-        operationRepository.save(operation);
+        operationRepository.addOperation(operation.getDate().toString(),
+                operation.getTransactionAmount(),
+                operation.getTypeOperation().toString(),
+                operation.getDescriptionOfOperation(),
+                operation.getUser().getId());
     }
 
     @Override
@@ -40,7 +45,13 @@ public class OperationServiceImpl implements OperationService {
     @Override
     public void updateOperation(Operation operation) {//обновление операции
         checkNumberPositivity(operation);
-        operationRepository.save(operation);
+        operationRepository.updateOperation(
+                operation.getId(),
+                operation.getDate(),
+                operation.getTransactionAmount(),
+                operation.getTypeOperation(),
+                operation.getDescriptionOfOperation(),
+                operation.getUser().getId());
     }
 
     @Override

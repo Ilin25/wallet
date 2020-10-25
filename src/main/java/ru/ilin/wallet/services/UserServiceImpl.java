@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addUser(User user) {
-        userRepository.addUser(user.getId(),user.getName());
+        userRepository.addUser(user.getName());
     }
 
     @Override
@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(User user) {
-        userRepository.save(user);
+        userRepository.updateUserById(user.getId(),user.getName());
     }
 
     @Override
