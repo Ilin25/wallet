@@ -29,8 +29,7 @@ public interface OperationRepository extends JpaRepository<Operation, Integer> {
                       @Param("typeOperations") String typeOperation,
                       @Param("descriptionOperations") String descriptionOperation,
                       @Param("userId") int id);
-//удаляет операцию из базы
-//    void removeOperation(int id);
+
     //обновляет запись операции в базе
     @Modifying
     @Transactional
@@ -40,4 +39,6 @@ public interface OperationRepository extends JpaRepository<Operation, Integer> {
 //    @Query(value = "SELECT * FROM history_of_operations", nativeQuery = true)
 //    List<Operation> getAllPeriodOperation(String startPeriod, String endPeriod);//возвращает список всех операций из базы
 
+    //удаляет операцию из базы
+//    void removeOperation(int id);
 }

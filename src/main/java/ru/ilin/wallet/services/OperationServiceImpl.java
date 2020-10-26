@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.ilin.wallet.models.Operation;
 import ru.ilin.wallet.models.TypeOperation;
+import ru.ilin.wallet.models.User;
 import ru.ilin.wallet.repository.OperationRepository;
 import ru.ilin.wallet.util.PeriodOperation;
 
@@ -63,6 +64,12 @@ public class OperationServiceImpl implements OperationService {
                     if (operation.getTypeOperation().equals(TypeOperation.PURCHASE)) {//если тип операции покупка
                         operation.setTransactionAmount(-operation.getTransactionAmount());//то присваивается отриц значение сумме операции
                     } else operation.setTransactionAmount(Math.abs(operation.getTransactionAmount()));//иначе положительное
+
+                    if(operation.getUser() == null){
+                        User deleteUser = new User();
+                        deleteUser.setName("Удалённый пользователь");
+                        operation.setUser(deleteUser);
+                    }
                 });
         return allOperationsList.stream().sorted(Comparator.comparing(Operation::getDate)).collect(Collectors.toList());
     }

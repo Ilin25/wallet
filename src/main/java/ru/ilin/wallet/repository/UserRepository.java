@@ -32,8 +32,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     void updateUserById(int id, String name);
 
     //удаляет пользователя из базы
-//    @Modifying
-//    @Query(value = "")
-//    void removeUserById(@Param("id") int id);
+    @Transactional
+    @Modifying
+    @Query(value = "DELETE FROM users u WHERE u.id =:id", nativeQuery = true)
+    void removeUserById(@Param("id") int id);
 
 }
