@@ -24,12 +24,12 @@ public class OperationServiceImpl implements OperationService {
     }
 
     @Override
-    public Operation getOperationId(int id) {
+    public Operation getOperationId(int id) {//получает операцию
         return operationRepository.getOperationById(id);
     }
 
     @Override
-    public void addOperation(Operation operation) {
+    public void addOperation(Operation operation) {//добавляет операцию
        checkNumberPositivity(operation);
         operationRepository.addOperation(operation.getDate().toString(),
                 operation.getTransactionAmount(),
@@ -39,12 +39,12 @@ public class OperationServiceImpl implements OperationService {
     }
 
     @Override
-    public void removeOperation(int id) {
-        operationRepository.deleteById(id);
+    public void removeOperation(int id) {//удаляет операцию
+        operationRepository.removeOperation(id);
     }
 
     @Override
-    public void updateOperation(Operation operation) {//обновление операции
+    public void updateOperation(Operation operation) {//обновляет операцию
         checkNumberPositivity(operation);
         operationRepository.updateOperation(
                 operation.getId(),
@@ -55,23 +55,21 @@ public class OperationServiceImpl implements OperationService {
                 operation.getUser().getId());
     }
 
-    @Override
+    @Override//возвращает список всех пользователей за нужный период
     public List<Operation> getAllPeriodOperation(PeriodOperation periodOperation) {
-        List<Operation> allOperationsList = operationRepository.findAll()
-                .stream()
-                .filter(operation -> operation.getDate().isAfter(periodOperation.getStartPeriod().minusDays(1)) && operation.getDate().isBefore(periodOperation.getEndPeriod().plusDays(1))).collect(Collectors.toList());
+        List<Operation> allOperationsList = operationRepository.getAllPeriodOperation(periodOperation.getStartPeriod().toString(),periodOperation.getEndPeriod().toString());
                 allOperationsList.forEach(operation -> {
                     if (operation.getTypeOperation().equals(TypeOperation.PURCHASE)) {//если тип операции покупка
                         operation.setTransactionAmount(-operation.getTransactionAmount());//то присваивается отриц значение сумме операции
                     } else operation.setTransactionAmount(Math.abs(operation.getTransactionAmount()));//иначе положительное
 
-                    if(operation.getUser() == null){
+                    if(operation.getUser() == null){// при отсутствии хозяина у операции,назначается новое имя пользователя
                         User deleteUser = new User();
                         deleteUser.setName("Удалённый пользователь");
                         operation.setUser(deleteUser);
                     }
                 });
-        return allOperationsList.stream().sorted(Comparator.comparing(Operation::getDate)).collect(Collectors.toList());
+        return allOperationsList;
     }
 
 
